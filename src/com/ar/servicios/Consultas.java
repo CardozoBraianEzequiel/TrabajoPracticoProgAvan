@@ -40,6 +40,22 @@ public class Consultas {
 		consulta = consulta += ")";
 		
 		System.out.println(consulta);
+		try {
+			UConexion uConn = UConexion.getInstance();
+			Connection conn = uConn.abrirConexion();
+			PreparedStatement ps;
+		
+			ps = conn.prepareStatement(consulta);
+			
+			ResultSet res = ps.executeQuery();
+			
+			uConn.cerrarConexion();
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 	}
 	
@@ -65,6 +81,22 @@ public class Consultas {
 		
 		System.out.println(consulta);
 		
+		try {
+			UConexion uConn = UConexion.getInstance();
+			Connection conn = uConn.abrirConexion();
+			PreparedStatement ps;
+		
+			ps = conn.prepareStatement(consulta);
+			
+			ResultSet res = ps.executeQuery();
+			
+			uConn.cerrarConexion();
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public static void eliminar(Object o) {
@@ -86,6 +118,22 @@ public class Consultas {
 		consulta = consulta + idTabla;
 		
 		System.out.println(consulta);
+		
+		try {
+			UConexion uConn = UConexion.getInstance();
+			Connection conn = uConn.abrirConexion();
+			PreparedStatement ps;
+		
+			ps = conn.prepareStatement(consulta);
+			
+			ResultSet res = ps.executeQuery();
+			
+			uConn.cerrarConexion();
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -134,6 +182,7 @@ public class Consultas {
 					  }		
 				 }
 				
+				uConn.cerrarConexion();
 				return retorno;
 			}
 			
