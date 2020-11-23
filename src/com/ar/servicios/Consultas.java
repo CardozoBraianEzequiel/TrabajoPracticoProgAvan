@@ -59,4 +59,28 @@ public class Consultas {
 		System.out.println(consulta);
 		
 	}
+	
+	public static void eliminar(Object o) {
+		String consulta = "delete from ";
+		String nombreTabla = o.getClass().getAnnotation(Tabla.class).nombre();
+		String idTabla = "";
+		
+		consulta = consulta + nombreTabla + " where id=";
+		
+		ArrayList<Field> attrs = UBean.obtenerAtributos(o);
+		
+		for(Field attr: attrs) {
+
+			if(attr.isAnnotationPresent(Id.class)) {
+				idTabla = UBean.ejecutarGet(o, attr.getName()).toString();
+			} 
+		}
+		
+		consulta = consulta + idTabla;
+		
+		System.out.println(consulta);
+		
+	}
+	
+	
 }

@@ -9,12 +9,14 @@ public class Program {
 		Alumno a = new Alumno();
 		
 		Consultas.guardar(a);
-		a.setId(1);
+		a.setId(2);
 		a.setNombre("Braian");
 		a.setApellido("Cardozo");
 		a.setLegajo(102857);
 	
 		Consultas.modificar(a);
+		
+		Consultas.eliminar(a);
 	}
 
 }
