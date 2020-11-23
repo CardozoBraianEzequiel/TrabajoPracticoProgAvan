@@ -9,17 +9,19 @@ public class Program {
 		// TODO Auto-generated method stub
 		Alumno a = new Alumno();
 		
-		Consultas.guardar(a);
-		a.setId(1);
-		a.setNombre("Jorge");
-		a.setApellido("Meza");
-		a.setLegajo(238900);
-	
-		Consultas.modificar(a);
 		
-		Consultas.eliminar(a);
+		a.setId(10);
+		a.setNombre("Sergio");
+		a.setApellido("Aguero");
+		a.setLegajo(256123);
 		
-		Alumno per = (Alumno) Consultas.obtenerPorId(a.getClass(), a);
+		Alumno per = (Alumno) Consultas.guardar(a);
+		
+		//Consultas.modificar(a);
+		
+		//Consultas.eliminar(a);
+		
+		//Alumno per = (Alumno) Consultas.obtenerPorId(a.getClass(), a);
 		System.out.println(per.toString());
 		
 	

@@ -1,5 +1,6 @@
 package com.ar.servicios;
 
+import java.beans.Statement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -17,7 +18,7 @@ import com.ar.utilidades.UConexion;
 
 public class Consultas {
 	
-	public static void guardar(Object o) {
+	public static Object guardar(Object o) {
 		String consulta = "insert into ";
 		String nombreTabla = o.getClass().getAnnotation(Tabla.class).nombre();
 		
@@ -33,30 +34,73 @@ public class Consultas {
 		consulta = consulta += ") values (";
 		
 		for(Field a:attrs) {
-			consulta = consulta += "?,";
+			Object getteado = UBean.ejecutarGet(o, a.getName());
+			if(getteado.getClass().getTypeName().equalsIgnoreCase(String.class.getName())) {
+				consulta = consulta + "'" + UBean.ejecutarGet(o, a.getName()) + "',";
+			}else {
+				consulta = consulta + UBean.ejecutarGet(o, a.getName())+ ",";
+			}
 		}
 		
 		consulta = consulta.substring(0, consulta.length()-1);
 		consulta = consulta += ")";
 		
 		System.out.println(consulta);
+		int idObjetoInsertado = 0;
+		
 		try {
 			UConexion uConn = UConexion.getInstance();
 			Connection conn = uConn.abrirConexion();
 			PreparedStatement ps;
 		
-			ps = conn.prepareStatement(consulta);
+			ps = conn.prepareStatement(consulta, PreparedStatement.RETURN_GENERATED_KEYS);
 			
-			ResultSet res = ps.executeQuery();
+			ps.executeUpdate();
+			ResultSet rs = ps.getGeneratedKeys();
+			while (rs.next()) {
+				   int claveGenerada = rs.getInt(1);
+				   System.out.println("Clave generada = " + claveGenerada);
+				}
 			
-			uConn.cerrarConexion();
 		}
 		catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		Object retorno = null;
+		for(Constructor cons:o.getClass().getConstructors()) {
+			if(cons.getParameterCount() == 0) {
+				try {
+					retorno = cons.newInstance(null);
+				} catch (InstantiationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			}
+		}
+		
+		ArrayList<Field> fields = UBean.obtenerAtributos(retorno);
+		
+		for (int i = 0; i < fields.size(); i++) {
+			  Id idTabla = fields.get(i).getAnnotation(Id.class);
+			  Columna columna = fields.get(i).getAnnotation(Columna.class);
+			  if( idTabla!=null ) {
+				  UBean.ejecutarSet(retorno, fields.get(i).getName(), UBean.ejecutarGet(o, fields.get(i).getName()) );
+			  }		
+		 }
 		
 		
+		return Consultas.obtenerPorId(o.getClass(), retorno);
 	}
 	
 	public static void modificar(Object o) {
