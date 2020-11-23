@@ -26,20 +26,6 @@ public class UBean {
 		
 		Constructor[] constructor = c.getConstructors();
 		
-		for(Constructor cons:constructor) {
-			if(cons.getParameterCount() == 0) {
-				try {
-					p = cons.newInstance(null);
-				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-						| InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				break;
-			}
-		}
-		
 		Method[] metodos = c.getDeclaredMethods();
 			
 		for(Method m:metodos) {
@@ -48,7 +34,7 @@ public class UBean {
 				params[0] = valor; 
 					
 				try {
-					m.invoke(p, params);
+					m.invoke(o, params);
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -67,28 +53,12 @@ public class UBean {
 		
 		String nombreAttAGettear = "get"+att;
 		
-		Constructor[] constructor = c.getConstructors();
-		
-		for(Constructor cons:constructor) {
-			if(cons.getParameterCount() == 0) {
-				try {
-					p = cons.newInstance(null);
-				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-						| InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				break;
-			}
-		}
-		
 		Method[] metodos = c.getDeclaredMethods();
 		Object getObtenido = null;
 		for(Method m:metodos) {
 			if(m.getName().equalsIgnoreCase(nombreAttAGettear)) {
 				try {
-					getObtenido = m.invoke(p, null);
+					getObtenido = m.invoke(o, null);
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

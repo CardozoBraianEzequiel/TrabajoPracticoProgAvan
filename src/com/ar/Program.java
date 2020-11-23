@@ -8,8 +8,13 @@ public class Program {
 		// TODO Auto-generated method stub
 		Alumno a = new Alumno();
 		
-		Consultas c = new Consultas();
-		c.guardar(a);
+		Consultas.guardar(a);
+		a.setId(1);
+		a.setNombre("Braian");
+		a.setApellido("Cardozo");
+		a.setLegajo(102857);
+	
+		Consultas.modificar(a);
 	}
 
 }
