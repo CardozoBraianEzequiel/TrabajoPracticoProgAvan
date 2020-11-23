@@ -1,5 +1,7 @@
 package com.ar;
 
+import java.util.ArrayList;
+
 import com.ar.servicios.Consultas;
 import com.ar.utilidades.Propiedades;
 
@@ -19,7 +21,11 @@ public class Program {
 		
 		//Consultas.eliminar(a);
 		
-		Consultas.guardarModificar(a);
+		ArrayList<Object> array = Consultas.obtenerTodos(Alumno.class);
+		
+		for(Object obj:array) {
+			System.out.println(obj.toString());
+		}
 		
 		//Alumno per = (Alumno) Consultas.obtenerPorId(a.getClass(), a);
 		//System.out.println(Consultas.obtenerPorId(Alumno.class, a));

@@ -257,4 +257,49 @@ public class Consultas {
 		
 	}
 	
+	public static ArrayList<Object> obtenerTodos(Class c) {
+		String consulta = "select * from ";
+		String nombreTabla = ((Tabla)c.getAnnotation(Tabla.class)).nombre();
+		
+		consulta = consulta + nombreTabla;
+		
+		ArrayList<Object> retorno = new ArrayList<Object>();		
+		
+		try {
+			System.out.println(consulta);
+			UConexion uConn = UConexion.getInstance();
+			Connection conn = uConn.abrirConexion();
+			PreparedStatement ps = conn.prepareStatement(consulta);
+		
+			ResultSet res = ps.executeQuery();
+			
+			while(res.next()) {
+				Object myObj = null;
+				for(Constructor cons:c.getConstructors()) {
+					if(cons.getParameterCount() == 0) {
+						myObj = cons.newInstance(null);
+						break;
+					}
+				}
+				
+				ArrayList<Field> fields = UBean.obtenerAtributos(myObj);
+				
+				for (int i = 0; i < fields.size(); i++) {
+					  Columna columna = fields.get(i).getAnnotation(Columna.class);
+					  if( columna!=null ) {
+						  UBean.ejecutarSet(myObj, fields.get(i).getName(), res.getObject(columna.nombre(), fields.get(i).getType()) );
+					  }		
+				 }
+				
+				retorno.add(myObj);
+				
+			}
+			
+		} catch (SQLException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return retorno;
+	}
+	
 }
