@@ -235,7 +235,6 @@ public class Consultas {
 					  }		
 				 }
 				
-				uConn.cerrarConexion();
 				return retorno;
 			}
 			
@@ -245,6 +244,16 @@ public class Consultas {
 		}
 
 		return retorno;
+		
+	}
+	
+	public static void guardarModificar(Object o) {
+		Object obj = Consultas.obtenerPorId(o.getClass(), o);
+		if(obj!=null) {
+			Consultas.modificar(o);
+		}else {
+			Consultas.guardar(o);
+		}
 		
 	}
 	

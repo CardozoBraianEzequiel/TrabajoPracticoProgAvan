@@ -11,15 +11,15 @@ public class Program {
 		
 		
 		a.setId(10);
-		a.setNombre("Arsenio");
-		a.setApellido("Erico");
-		a.setLegajo(201356);
+		a.setNombre("German");
+		a.setApellido("Denis");
+		a.setLegajo(180234);
 		
 		//Alumno per = (Alumno) Consultas.guardar(a);
 		
-		Consultas.eliminar(a);
-		
 		//Consultas.eliminar(a);
+		
+		Consultas.guardarModificar(a);
 		
 		//Alumno per = (Alumno) Consultas.obtenerPorId(a.getClass(), a);
 		//System.out.println(Consultas.obtenerPorId(Alumno.class, a));
