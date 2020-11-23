@@ -107,6 +107,7 @@ public class Consultas {
 		String consulta = "update ";
 		String nombreTabla = o.getClass().getAnnotation(Tabla.class).nombre();
 		String idTabla = "";
+		String nombreIdTabla = "";
 		consulta = consulta + nombreTabla + " set ";
 		
 		ArrayList<Field> attrs = UBean.obtenerAtributos(o);
@@ -115,13 +116,20 @@ public class Consultas {
 
 			if(attr.isAnnotationPresent(Id.class)) {
 				idTabla = UBean.ejecutarGet(o, attr.getName()).toString();
+				nombreIdTabla = attr.getAnnotation(Columna.class).nombre();
 			} else {
 				consulta += attr.getAnnotation(Columna.class).nombre() + "=";
-				consulta += "'" + UBean.ejecutarGet(o, attr.getName())+ "' ";	
+				
+				Object getteado = UBean.ejecutarGet(o, attr.getName());
+				if(getteado.getClass().getTypeName().equalsIgnoreCase(String.class.getName())) {
+					consulta = consulta + "'" + UBean.ejecutarGet(o, attr.getName()) + "',";
+				}else {
+					consulta = consulta + UBean.ejecutarGet(o, attr.getName())+ ",";
+				}
 			}
 		}
-		
-		consulta += "where id=" + idTabla;
+		consulta = consulta.substring(0, consulta.length()-1);
+		consulta += " where " + nombreIdTabla + "=" + idTabla;
 		
 		System.out.println(consulta);
 		
@@ -132,9 +140,8 @@ public class Consultas {
 		
 			ps = conn.prepareStatement(consulta);
 			
-			ResultSet res = ps.executeQuery();
+			ps.executeUpdate();
 			
-			uConn.cerrarConexion();
 		}
 		catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -147,8 +154,9 @@ public class Consultas {
 		String consulta = "delete from ";
 		String nombreTabla = o.getClass().getAnnotation(Tabla.class).nombre();
 		String idTabla = "";
+		String nombreIdTabla = "";
 		
-		consulta = consulta + nombreTabla + " where id=";
+		consulta = consulta + nombreTabla + " where ";
 		
 		ArrayList<Field> attrs = UBean.obtenerAtributos(o);
 		
@@ -156,10 +164,11 @@ public class Consultas {
 
 			if(attr.isAnnotationPresent(Id.class)) {
 				idTabla = UBean.ejecutarGet(o, attr.getName()).toString();
+				nombreIdTabla = attr.getAnnotation(Columna.class).nombre();
 			} 
 		}
 		
-		consulta = consulta + idTabla;
+		consulta = consulta + nombreIdTabla + " = " + idTabla;
 		
 		System.out.println(consulta);
 		
@@ -170,7 +179,7 @@ public class Consultas {
 		
 			ps = conn.prepareStatement(consulta);
 			
-			ResultSet res = ps.executeQuery();
+			ps.executeUpdate();
 			
 			uConn.cerrarConexion();
 		}

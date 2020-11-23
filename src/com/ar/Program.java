@@ -11,18 +11,18 @@ public class Program {
 		
 		
 		a.setId(10);
-		a.setNombre("Sergio");
-		a.setApellido("Aguero");
-		a.setLegajo(256123);
+		a.setNombre("Arsenio");
+		a.setApellido("Erico");
+		a.setLegajo(201356);
 		
-		Alumno per = (Alumno) Consultas.guardar(a);
+		//Alumno per = (Alumno) Consultas.guardar(a);
 		
-		//Consultas.modificar(a);
+		Consultas.eliminar(a);
 		
 		//Consultas.eliminar(a);
 		
 		//Alumno per = (Alumno) Consultas.obtenerPorId(a.getClass(), a);
-		System.out.println(per.toString());
+		//System.out.println(Consultas.obtenerPorId(Alumno.class, a));
 		
 	
 	}
