@@ -2,7 +2,7 @@ package com.ar;
 
 import com.ar.anotaciones.*;
 
-@Tabla(nombre="alumno")
+@Tabla(nombre="tmt_alumno")
 public class Alumno {
 	@Id
 	@Columna(nombre="idAlumno")
