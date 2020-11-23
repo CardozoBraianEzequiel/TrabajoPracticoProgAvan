@@ -1,5 +1,6 @@
 package com.ar.servicios;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
@@ -82,5 +83,28 @@ public class Consultas {
 		
 	}
 	
+	public static Object obtenerPorId(Class c, Object id) {
+		String consulta = "select * from ";
+		String nombreTabla = ((Tabla)c.getAnnotation(Tabla.class)).nombre();
+		String idTabla = "";
+		Object obj = null;
+		consulta = consulta + nombreTabla + " where id=";
+		
+		
+		ArrayList<Field> attrs = UBean.obtenerAtributos(id);
+		
+		for(Field attr: attrs) {
+
+			if(attr.isAnnotationPresent(Id.class)) {
+				idTabla = UBean.ejecutarGet(id, attr.getName()).toString();
+			} 
+		}
+		
+		consulta = consulta + idTabla;
+		
+		System.out.println(consulta);
+		return obj;
+		
+	}
 	
 }

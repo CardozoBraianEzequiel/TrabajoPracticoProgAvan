@@ -17,6 +17,8 @@ public class Program {
 		Consultas.modificar(a);
 		
 		Consultas.eliminar(a);
+		
+		Consultas.obtenerPorId(a.getClass(), a);
 	}
 
 }

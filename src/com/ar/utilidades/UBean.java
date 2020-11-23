@@ -24,8 +24,6 @@ public class UBean {
 		
 		String nombreAttASettear = "set"+att;
 		
-		Constructor[] constructor = c.getConstructors();
-		
 		Method[] metodos = c.getDeclaredMethods();
 			
 		for(Method m:metodos) {
